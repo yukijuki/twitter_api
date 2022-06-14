@@ -1,0 +1,81 @@
+<!Doctype html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    {% block css %}
+    {% endblock %} 
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/sb-admin-2.css') }}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
+    <!-- title-->
+    {% block title %}{% endblock %}
+</head>
+
+<body id="page-top">
+    
+    <form action="/" method="POST">
+        <div class="form-group">
+            <label for="formGroupExampleInput">検索ワード入力</label>
+            <label for="formGroupExampleInput">例 PayPay P活</label>
+            <input type="text" class="form-control" id="formGroupExampleInput" name="search_word" required>
+        </div>
+
+        <button class="btn btn-primary mb-2" type="submit">送信</button>
+    </form>
+    
+    <h1>{{ list_response | length }}件</h1>
+    <!-- DataTales Example style="font-size: 10pt; line-height: 140%;"-->
+    <table class="table table-responsive mt-4" style="font-size: 10pt; line-height: 140%;">
+        <thead>
+            <tr>
+                <th scope="col">id</th>
+                <th scope="col">twitter_user_id</th>
+                <th scope="col">Tweet</th>
+                <th scope="col">url</th>
+                <th scope="col">likes</th>
+                <th scope="col">created_at</th>
+                <th scope="col">image</th>
+            </tr>
+        </thead>
+        {% if list_response %} 
+        {% for tweet in list_response %}
+        <tbody class="table">
+            <tr>
+                <td>{{ tweet[1] }}</td>
+                <td>{{ tweet[2] }}</td>
+                <td>{{ tweet[4] }}</td>
+                <td>{{ tweet[6] }}</td>
+                <td>{{ tweet[5] }}</td>
+                <td>{{ tweet[3] }}</td>
+                <td><img style="width: 100%; height: auto;" src={{ tweet[7] }}></td>
+                
+            </tr>
+        </tbody>
+        {% endfor %} 
+        {% endif %}
+    </table>
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+
+        {% for message in get_flashed_messages() %}
+        <div class="alert text-center">{{ message }}</div>
+        {% endfor %}
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script>
+        function doReload() {
+        
+        // reloadメソッドによりページをリロード
+        window.location.reload();
+        }
+    </script>
+</body>
+</html>
