@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+
+{% block title %}
+<title>AppLog - プロジェクト名入力画面</title>
+{% endblock %} 
+
+{% block nav %}
+<div class="nav-item">
+    <a class="nav-link" href="screen">
+        <i class="fas fa-chevron-left"></i>
+    </a>
+</div>
+{% endblock %}
+
+{% block content %}
+<form action="/project" method="post">
+    <div class="form-group">
+        <label for="exampleInputEmail1">プロジェクト名を入力</label>
+        <input type="text" name="project_name" class="form-control" id="exampleFormControlInput1" required>
+    </div>
+    <button type="submit" class="btn btn-primary">進む</button>
+</form>
+{% endblock content %}
