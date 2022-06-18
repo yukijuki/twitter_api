@@ -1,22 +1,24 @@
-<!Doctype html>
-<html>
+{% extends "layout.html" %} 
 
-<head>
-    <meta charset="UTF-8">
-    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    {% block css %}
-    {% endblock %} 
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/sb-admin-2.css') }}">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
-    <!-- title-->
-    {% block title %}{% endblock %}
-</head>
+
+{% block css %}
+
+<style>
+    .form-control::placeholder{
+        color: gray;
+    }
+</style>
+{% endblock %} 
+
+{% block title %}
+<title>2nd Opinion/Home</title>
+{% endblock %} 
+
+{% block content %}
 
 <body id="page-top">
     
-    <form action="/" method="POST">
+    <form action="/home" method="POST">
         <div class="form-group">
             <label for="formGroupExampleInput">検索ワード入力</label>
             <label for="formGroupExampleInput">例 PayPay P活</label>
@@ -58,24 +60,20 @@
         {% endif %}
     </table>
 
-    <!-- Page Wrapper -->
-    <div id="wrapper">
+    <div class="card">
+        <div class="card-body">
+            <div class="text-center my-6">
+                {% if list_response %} 
+                {% for tweet in list_response %}
+                <!-- Title -->
+                <a href="#" class="d-block h5 mb-0">{{ tweet[3] }}</a>
+                <!-- Subtitle -->
+                <span class="d-block text-sm text-muted">{{ tweet[4] }}</span>
 
-        {% for message in get_flashed_messages() %}
-        <div class="alert text-center">{{ message }}</div>
-        {% endfor %}
+                {% endfor %} 
+                {% endif %}
+            </div>
+        </div>
     </div>
 
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-    <script>
-        function doReload() {
-        
-        // reloadメソッドによりページをリロード
-        window.location.reload();
-        }
-    </script>
-</body>
-</html>
+{% endblock content %} 

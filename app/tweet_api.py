@@ -1,4 +1,6 @@
+from app.sentiment_analysis import convert
 import requests
+
 
 #const variables
 api_key = "bNto50MTJRwuBR0eqJUVWUsGe"
@@ -28,7 +30,6 @@ def get_tweets(search_url):
             endpoint_url = search_url + next_token
 
         # call endpoint
-        print(endpoint_url)
         response = requests.get(endpoint_url, auth=bearer_oauth)
         if response.status_code != 200:
             raise Exception(response.status_code, response.text)
@@ -38,18 +39,16 @@ def get_tweets(search_url):
         for tweet_data in data_response:
             tweet = []
             try:
-                if tweet_data["entities"]["urls"]:
-                    tweet.append(tweet_data["id"])
-                    tweet.append(tweet_data["author_id"])
-                    tweet.append(tweet_data["created_at"])
-                    tweet.append(tweet_data["text"])
-                    tweet.append(tweet_data["public_metrics"]["like_count"])
-                    tweet.append(tweet_data["entities"]["urls"][0]["expanded_url"])
-                    tweets_list.append(tweet)
-                else:
-                    tweet.append(" ")
-            except KeyError: 
-                pass
+                tweet.append(tweet_data["id"])
+                tweet.append(tweet_data["author_id"])
+                tweet.append(tweet_data["created_at"])
+                tweet.append(tweet_data["text"])
+                tweet.append(tweet_data["public_metrics"]["like_count"])
+                sentiment = convert(tweet_data["text"])
+                tweet.append(sentiment["top_class"])
+                tweets_list.append(tweet)
+            except KeyError:
+                tweet.append(" ")
   
         request_iterator += 1
         if request_iterator >= 30: # 180requestを超えたら止める
@@ -65,5 +64,5 @@ def get_tweets(search_url):
         except KeyError:
             next_token_flag = False
 
-    print(iterator, request_iterator)
+    print(str(iterator)+"件のツイート", str(request_iterator)+"回目の検索")
     return tweets_list
