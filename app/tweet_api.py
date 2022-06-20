@@ -23,8 +23,6 @@ def bearer_oauth(r):
 
 def get_tweets(search_word):
 
-    print(search_word)
-    search_word = re.sub(r'[!"“#$%&()\*\+\-\.,\/:;<=>?@\[\\\]^_`{|}~]', '', search_word)
     search_url = endpoint + '?query={}%20-is%3Aretweet&expansions=author_id&tweet.fields={}&max_results=100'.format(search_word, tweet_field)
 
     next_token_flag = True
@@ -48,7 +46,6 @@ def get_tweets(search_word):
 
         #orgnize list
         if response.json()["meta"]["result_count"] == 0:
-            flash("ツイートが見つかりません！")
             break
         data_response = response.json()["data"]
         for tweet_data in data_response:
@@ -101,8 +98,6 @@ def sort_tweets(list):
             if len(returning_list) >= 20:
                 break
     
-    print(returning_list)
-
     return returning_list
 
 

@@ -24,6 +24,7 @@ def home():
             data = request.form
             passed_search_word = data["search_word"]
             list_of_search_word = range_word_list(passed_search_word)
+            print(list_of_search_word)
             for search_word in list_of_search_word:
                 list_of_tweets = get_tweets(search_word)
                 returning_tweets_list.extend(list_of_tweets)
