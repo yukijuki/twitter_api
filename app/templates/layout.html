@@ -5,9 +5,9 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-wdith, initial-scale=1.0,　user-scalable=no">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
         <link href="https://unpkg.com/@webpixels/css/dist/index.css" rel="stylesheet">
-        <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous"> -->
+        <link rel ="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+        <link rel="stylesheet" href="{{ url_for('static', filename='card.css') }}"/>
 
     </head>
 
@@ -37,38 +37,24 @@
         <!-- Header -->
         <header class="pt-5 bg-surface-secondary">
             <div class="container-xl">
-                <div>
-                    <div class="row align-items-center">
-                        <div class="col-md-6 col-12 mb-3 mb-md-0">
-                            <!-- Title -->
-                            <h1 class="h2 mb-0 ls-tight">検索してね</h1>
-                        </div>
-                        <!-- Actions -->
-                        <div class="col-md-6 col-12 text-md-end">
-                            <div class="mx-n1">
-                                <a href="#" class="btn d-inline-flex btn-sm btn-primary mx-1">
-                                    <span class=" pe-2">
-                                        <i class="bi bi-cloud-download"></i>
-                                    </span>
-                                    <span>Share</span>
-                                </a>
-                            </div>
-                        </div>
+                <div class="row align-items-center">
+                    <div class="col-md-6 col-12 mb-3 mb-md-0">
+                        <!-- Title -->
+                        <h1 class="h2 mb-0 ls-tight">検索してね</h1>
+                        {% block form %}
+                        {% endblock %} 
                     </div>
-                    <!-- Nav -->
-                    <ul class="nav nav-tabs overflow-x mt-2">
-                    </ul>
                 </div>
+                <!-- Nav -->
+                <ul class="nav nav-tabs overflow-x mt-2">
+                </ul>
             </div>
         </header>
         <!-- Main content -->
         <main class="py-10 bg-surface-secondary">
-            <!-- Container -->
             <div class="container-xl">
-                <div class="bg-card rounded shadow-sm">
                 {% block content %}     
                 {% endblock %}
-                </div>
             </div>
         </main>
         <script>

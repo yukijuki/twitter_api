@@ -1,79 +1,60 @@
 {% extends "layout.html" %} 
 
-
 {% block css %}
-
-<style>
-    .form-control::placeholder{
-        color: gray;
-    }
-</style>
 {% endblock %} 
 
 {% block title %}
 <title>2nd Opinion/Home</title>
 {% endblock %} 
 
+{% block form %}
+<form action="/home" method="POST">
+    <div class="form-group">
+        <label class="form-label" for="formGroupExampleInput">検索ワード入力</label>
+        <label for="formGroupExampleInput">例 PayPay P活</label>
+        <input type="text" class="form-control" id="formGroupExampleInput" name="search_word" placeholder="高校数学は義務教育において必要？" required>
+    </div>
+    <button class="btn btn-primary mb-2" type="submit">送信</button>
+</form>
+{% endblock %} 
+
+
 {% block content %}
-
-<body id="page-top">
-    
-    <form action="/home" method="POST">
-        <div class="form-group">
-            <label for="formGroupExampleInput">検索ワード入力</label>
-            <label for="formGroupExampleInput">例 PayPay P活</label>
-            <input type="text" class="form-control" id="formGroupExampleInput" name="search_word" required>
-        </div>
-
-        <button class="btn btn-primary mb-2" type="submit">送信</button>
-    </form>
-    
-    <h1>{{ list_response | length }}件</h1>
-    <!-- DataTales Example style="font-size: 10pt; line-height: 140%;"-->
-    <table class="table table-responsive mt-4" style="font-size: 10pt; line-height: 140%;">
-        <thead>
-            <tr>
-                <th scope="col">id</th>
-                <th scope="col">twitter_user_id</th>
-                <th scope="col">Tweet</th>
-                <th scope="col">url</th>
-                <th scope="col">likes</th>
-                <th scope="col">created_at</th>
-                <th scope="col">image</th>
-            </tr>
-        </thead>
-        {% if list_response %} 
-        {% for tweet in list_response %}
-        <tbody class="table">
-            <tr>
-                <td>{{ tweet[1] }}</td>
-                <td>{{ tweet[2] }}</td>
-                <td>{{ tweet[4] }}</td>
-                <td>{{ tweet[6] }}</td>
-                <td>{{ tweet[5] }}</td>
-                <td>{{ tweet[3] }}</td>
-                <td><img style="width: 100%; height: auto;" src={{ tweet[7] }}></td>
-                
-            </tr>
-        </tbody>
-        {% endfor %} 
-        {% endif %}
-    </table>
-
-    <div class="card">
-        <div class="card-body">
-            <div class="text-center my-6">
-                {% if list_response %} 
-                {% for tweet in list_response %}
-                <!-- Title -->
-                <a href="#" class="d-block h5 mb-0">{{ tweet[3] }}</a>
-                <!-- Subtitle -->
-                <span class="d-block text-sm text-muted">{{ tweet[4] }}</span>
-
-                {% endfor %} 
-                {% endif %}
+{% if list_response %} 
+<div class="row gy-5">
+<h1> 肯定派の意見</h1>
+{% for tweet in list_response %}
+{% if tweet[6] == "positive" %}
+    <div class="col-6 col-sm-4">
+        <div class="card">
+            <div class="card-body">
+                <p class="">{{ tweet[3] }}</p>
+                <span class="badge bg-soft-success text-success">返信数: </i>{{ tweet[5] }}</span>
+                <span onclick="{{ tweet[0] }}"class="badge rounded-pill bg-soft-info text-info">Tweetリンク</span>
             </div>
         </div>
     </div>
+{% endif %}
+{% else %}
+{% endfor %} 
+<br>
+<br>
+<h1> 否定派の意見</h1>
+{% for tweet in list_response %}
+{% if tweet[6] == "negative" %}
+    <div class="col-6 col-sm-4">
+        <div class="card">
+            <div class="card-body">
+                <p class="">{{ tweet[3] }}</p>
+                <span class="badge bg-soft-success text-success">返信数: </i>{{ tweet[5] }}</span>
+                <span onclick="{{ tweet[0] }}"class="badge rounded-pill bg-soft-info text-info">Tweetリンク</span>
+            </div>
+        </div>
+    </div>
+{% endif %}
+{% else %}
+{% endfor %} 
+</div>
+{% endif %}
 
 {% endblock content %} 

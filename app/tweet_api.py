@@ -35,15 +35,18 @@ def get_tweets(search_url):
             raise Exception(response.status_code, response.text)
 
         #orgnize list
+        if response.json()["meta"]["result_count"] == 0:
+            break
         data_response = response.json()["data"]
         for tweet_data in data_response:
             tweet = []
             try:
-                tweet.append(tweet_data["id"])
+                tweet.append("https://twitter.com/tweet/status/" + tweet_data["id"])
                 tweet.append(tweet_data["author_id"])
                 tweet.append(tweet_data["created_at"])
                 tweet.append(tweet_data["text"])
                 tweet.append(tweet_data["public_metrics"]["like_count"])
+                tweet.append(tweet_data["public_metrics"]["reply_count"])
                 sentiment = convert(tweet_data["text"])
                 tweet.append(sentiment["top_class"])
                 tweets_list.append(tweet)
@@ -51,7 +54,7 @@ def get_tweets(search_url):
                 tweet.append(" ")
   
         request_iterator += 1
-        if request_iterator >= 30: # 180requestを超えたら止める
+        if request_iterator >= 10: # 180requestを超えたら止める
             print('30リクエストを超えるため、中止します')
             break
 
@@ -66,3 +69,23 @@ def get_tweets(search_url):
 
     print(str(iterator)+"件のツイート", str(request_iterator)+"回目の検索")
     return tweets_list
+
+def sort_tweets(list):
+    returning_list =[]
+    sorted_list = sorted(list, reverse=True, key=lambda x: x[4])
+
+    for sorted_tweet in sorted_list:
+        if sorted_tweet[6] == "positive":
+            returning_list.append(sorted_tweet)
+            if len(returning_list) >= 10:
+                break
+
+    for sorted_tweet in sorted_list:
+        if sorted_tweet[6] == "negative":
+            returning_list.append(sorted_tweet)
+            if len(returning_list) >= 20:
+                break
+    
+    print(returning_list)
+
+    return returning_list
