@@ -8,7 +8,7 @@
 {% endblock %} 
 
 {% block form %}
-<form action="/home" method="POST">
+<form action="/" method="POST">
     <div class="form-group">
         <label class="form-label" for="formGroupExampleInput">検索ワード入力</label>
         <label for="formGroupExampleInput">例 PayPay P活</label>
@@ -19,10 +19,11 @@
 {% endblock %} 
 
 
+
 {% block content %}
 {% if list_response %} 
 <div class="row gy-5">
-<h1> 直近の肯定的な意見</h1>
+<h2> 直近の肯定的な意見</h2>
 {% for tweet in list_response %}
 {% if tweet[6] == "positive" %}
     <div class="col-6 col-sm-4">
@@ -30,7 +31,7 @@
             <div class="card-body">
                 <p class="">{{ tweet[3] }}</p>
                 <span class="badge bg-soft-success text-success">返信数: </i>{{ tweet[5] }}件</span>
-                <span onclick="{{ tweet[0] }}"class="badge rounded-pill bg-soft-info text-info">Tweetリンク</span>
+                <span onclick="{{ tweet[0] }}"class="badge rounded-pill bg-soft-info text-info">{{ tweet[7] }}</span>
             </div>
         </div>
     </div>
@@ -38,7 +39,7 @@
 {% else %}
 {% endfor %} 
 
-<h1> 直近の否定的な意見</h1>
+<h2> 直近の否定的な意見</h2>
 {% for tweet in list_response %}
 {% if tweet[6] == "negative" %}
     <div class="col-6 col-sm-4">
@@ -46,7 +47,7 @@
             <div class="card-body">
                 <p class="">{{ tweet[3] }}</p>
                 <span class="badge bg-soft-success text-success">返信数: </i>{{ tweet[5] }}件</span>
-                <span onclick="{{ tweet[0] }}"class="badge rounded-pill bg-soft-info text-info">Tweetリンク</span>
+                <span onclick="{{ tweet[0] }}"class="badge rounded-pill bg-soft-info text-info">{{ tweet[7] }}</span>
             </div>
         </div>
     </div>

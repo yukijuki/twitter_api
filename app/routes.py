@@ -1,35 +1,34 @@
 from flask import request, redirect, render_template
 from app import app
-from app.tweet_api import get_tweets, sort_tweets
-from app.morphological_analysis import word_list
+from app.tweet_api import get_tweets, sort_tweets, trend
+from app.morphological_analysis import range_word_list
 
 
-#Configs
-endpoint = "https://api.twitter.com/2/tweets/search/recent"
-tweet_field = "id,created_at,public_metrics,text,author_id,entities"
-media_field = "media_key,preview_image_url,url"
 
-
+# @app.route("/", methods=["GET", "POST"])
+# def index():
+#     return render_template("index.html")
 
 @app.route("/", methods=["GET", "POST"])
-def index():
-    return render_template("index.html")
-
-@app.route("/home", methods=["GET", "POST"])
 def home():
+    #List preparartion
+    returning_tweets_list = []
+    list_of_sorted_tweets = []
+    list_of_search_word = []
+
+    # trend_list = trend()
+    # print(trend_list)
+
     if request.method == "POST":
         if request.form:
             data = request.form
-            search_word = data["search_word"]
-            search_url = endpoint + '?query={}%20-is%3Aretweet&expansions=author_id&tweet.fields={}&max_results=100'.format(search_word, tweet_field)
-            list_of_tweets = get_tweets(search_url)
-            list_of_sorted_tweets = sort_tweets(list_of_tweets)
+            passed_search_word = data["search_word"]
+            list_of_search_word = range_word_list(passed_search_word)
+            for search_word in list_of_search_word:
+                list_of_tweets = get_tweets(search_word)
+                returning_tweets_list.extend(list_of_tweets)
+            
+            returning_distinct_tweets = list(map(list, set(map(tuple, returning_tweets_list))))
+            list_of_sorted_tweets = sort_tweets(returning_distinct_tweets)
 
-    return render_template("index.html", list_response = list_of_sorted_tweets)
-
-@app.route("/search", methods=["GET", "POST"])
-def search():
-    sentence = "高校数学は義務教育で必要か"
-    search_words = word_list(sentence)
-    print(search_words)
-    return render_template("index.html")
+    return render_template("index.html", list_response = list_of_sorted_tweets, list_of_search_word = list_of_search_word)

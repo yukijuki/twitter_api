@@ -1,6 +1,8 @@
+from urllib import response
 from app.sentiment_analysis import convert
 from flask import flash
 import requests
+import re
 
 
 #const variables
@@ -8,13 +10,22 @@ api_key = "bNto50MTJRwuBR0eqJUVWUsGe"
 api_key_secret = "qz72CdQXfgkJf6bvSvKy4Zj6EFEgisXTQQ1wNMJ6XOOJ3n8vFk"
 bearer_token = "AAAAAAAAAAAAAAAAAAAAAEsCcwEAAAAA8%2Fvq5bNbOZ899YVCTq1Y8y0uxoA%3DaTXsS7kWUIKeR4qs9WkFnlxZKNVedQ091aN6KUpD5RqjlZtJjU"
 
+#Configs
+endpoint = "https://api.twitter.com/2/tweets/search/recent"
+tweet_field = "id,created_at,public_metrics,text,author_id,entities"
+media_field = "media_key,preview_image_url,url"
+
 
 def bearer_oauth(r):
     r.headers["Authorization"] = f"Bearer {bearer_token}"
     r.headers["User-Agent"] = "v2RecentSearchPython"
     return r
 
-def get_tweets(search_url):
+def get_tweets(search_word):
+
+    print(search_word)
+    search_word = re.sub(r'[!"“#$%&()\*\+\-\.,\/:;<=>?@\[\\\]^_`{|}~]', '', search_word)
+    search_url = endpoint + '?query={}%20-is%3Aretweet&expansions=author_id&tweet.fields={}&max_results=100'.format(search_word, tweet_field)
 
     next_token_flag = True
     next_token = ""
@@ -51,12 +62,13 @@ def get_tweets(search_url):
                 tweet.append(tweet_data["public_metrics"]["reply_count"])
                 sentiment = convert(tweet_data["text"])
                 tweet.append(sentiment["top_class"])
+                tweet.append("検索ワード: " + search_word)
                 tweets_list.append(tweet)
             except KeyError:
                 tweet.append(" ")
   
-        if request_iterator > 10: # 180requestを超えたら止める
-            print('10リクエストを超えるため、中止します')
+        if request_iterator > 5: # 180requestを超えたら止める
+            print('5リクエストを超えるため、中止します')
             break
 
         #adding count
@@ -92,3 +104,10 @@ def sort_tweets(list):
     print(returning_list)
 
     return returning_list
+
+
+def trend():
+    trend_response = requests.get("https://api.twitter.com/1.1/trends/place.json?id=23424856", auth=bearer_oauth)
+    if trend_response.status_code != 200:
+            raise Exception(trend_response.status_code, trend_response.text)
+    return  trend_response
