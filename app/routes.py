@@ -26,3 +26,10 @@ def home():
             list_of_sorted_tweets = sort_tweets(list_of_tweets)
 
     return render_template("index.html", list_response = list_of_sorted_tweets)
+
+@app.route("/search", methods=["GET", "POST"])
+def search():
+    sentence = "高校数学は義務教育で必要か"
+    search_words = word_list(sentence)
+    print(search_words)
+    return render_template("index.html")

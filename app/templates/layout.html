@@ -14,7 +14,7 @@
     <body>    
         <div class="fixed-top">
             {% for message in get_flashed_messages() %}
-            <div class="alert-success text-center">{{ message }}</div>
+            <div class="alert-danger text-center">{{ message }}</div>
             {% endfor %}
         </div>
 

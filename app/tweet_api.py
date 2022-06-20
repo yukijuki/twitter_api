@@ -1,4 +1,5 @@
 from app.sentiment_analysis import convert
+from flask import flash
 import requests
 
 
@@ -36,6 +37,7 @@ def get_tweets(search_url):
 
         #orgnize list
         if response.json()["meta"]["result_count"] == 0:
+            flash("ツイートが見つかりません！")
             break
         data_response = response.json()["data"]
         for tweet_data in data_response:
@@ -53,11 +55,12 @@ def get_tweets(search_url):
             except KeyError:
                 tweet.append(" ")
   
-        request_iterator += 1
-        if request_iterator >= 10: # 180requestを超えたら止める
-            print('30リクエストを超えるため、中止します')
+        if request_iterator > 10: # 180requestを超えたら止める
+            print('10リクエストを超えるため、中止します')
             break
 
+        #adding count
+        request_iterator += 1
         iterator += response.json()['meta']['result_count']
 
         #handling pagination
@@ -67,7 +70,7 @@ def get_tweets(search_url):
         except KeyError:
             next_token_flag = False
 
-    print(str(iterator)+"件のツイート", str(request_iterator)+"回目の検索")
+    print(str(iterator)+"件のツイート / " + str(request_iterator)+"回目の検索")
     return tweets_list
 
 def sort_tweets(list):

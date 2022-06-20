@@ -123,3 +123,43 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+
+
+# <div class="table-responsive">
+#     <h1>{{ list_response | length }}件</h1>
+#     <table class="table table-hover">
+#         <thead class="thead-light">
+#             <tr>
+#                 <th scope="col">Tweet</th>
+#                 <th scope="col">likes</th>
+#                 <th scope="col">created_at</th>
+#             </tr>
+#         </thead>
+#     <!-- DataTales Example style="font-size: 10pt; line-height: 140%;"-->
+#         {% if list_response %} 
+#         {% for tweet in list_response %}
+#         {% if tweet[5] == "positive" %}
+#             <tbody class="table">
+#                 <tr>
+#                     <td data-label="" style="word-break: break-word; word-wrap: break-word;">
+#                         <a class="text-current" href="{{ tweet[0] }}">
+#                             <p>{{ tweet[3] }}</p>
+#                         </a>
+#                     </td>
+#                     <td data-label="">
+#                         <span class="badge bg-soft-success text-success">{{ tweet[4] }}</span>
+#                     </td>
+#                     <td data-label="">
+#                         <a class="text-current" href="#">{{ tweet[2] }}</a>
+#                     </td>        
+#                 </tr>
+#             </tbody>
+#         {% endif %}
+#         {% else %}
+#             <p>Undefined</p>
+#         {% endfor %} 
+#         {% endif %}
+#     </table>
+# </div>
