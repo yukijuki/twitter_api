@@ -19,7 +19,9 @@ def range_word_list(sentence):
     char_filters = [UnicodeNormalizeCharFilter(), RegexReplaceCharFilter('<.*?>', '')] #正規表現パターンにマッチした文字列を置換
     a = Analyzer(char_filters=char_filters, token_filters=[CompoundNounFilter(),POSKeepFilter(['名詞'])])
     search_noun_word = [token.surface for token in a.analyze(sentence)]
-    wide_range_pair_list.append(sentence)
+    
+    for pair in itertools.combinations(search_noun_word, len(search_noun_word)):
+        wide_range_pair_list.append(' '.join(list(pair)))
 
     #here is what to make change
     print(search_noun_word)
