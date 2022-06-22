@@ -51,16 +51,23 @@ def get_tweets(search_word):
         for tweet_data in data_response:
             tweet = []
             try:
-                tweet.append("https://twitter.com/tweet/status/" + tweet_data["id"])
-                tweet.append(tweet_data["author_id"])
-                tweet.append(tweet_data["created_at"])
-                tweet.append(tweet_data["text"])
-                tweet.append(tweet_data["public_metrics"]["like_count"])
-                tweet.append(tweet_data["public_metrics"]["reply_count"])
                 sentiment = convert(tweet_data["text"])
-                tweet.append(sentiment["top_class"])
-                tweet.append("検索ワード: " + search_word)
-                tweets_list.append(tweet)
+                if sentiment["classes"][0]["confidence"] >= 0.8 or sentiment["classes"][1]["confidence"] >= 0.8:
+                    strength = 0
+                    if sentiment["classes"][0]["confidence"] >= sentiment["classes"][1]["confidence"]:
+                        strength = sentiment["classes"][0]["confidence"]
+                    else:
+                        strength = sentiment["classes"][1]["confidence"]
+                    tweet.append("https://twitter.com/tweet/status/" + tweet_data["id"])
+                    tweet.append(tweet_data["author_id"])
+                    tweet.append(tweet_data["created_at"])
+                    tweet.append(tweet_data["text"])
+                    tweet.append(tweet_data["public_metrics"]["like_count"])
+                    tweet.append(tweet_data["public_metrics"]["reply_count"])
+                    tweet.append(sentiment["top_class"])
+                    tweet.append("検索ワード: " + search_word)
+                    tweet.append('{:.0%}'.format(strength))
+                    tweets_list.append(tweet)
             except KeyError:
                 tweet.append(" ")
   
@@ -84,18 +91,18 @@ def get_tweets(search_word):
 
 def sort_tweets(list):
     returning_list =[]
-    sorted_list = sorted(list, reverse=True, key=lambda x: x[4])
+    sorted_list = sorted(list, reverse=True, key=lambda x: x[8])
 
     for sorted_tweet in sorted_list:
         if sorted_tweet[6] == "positive":
             returning_list.append(sorted_tweet)
-            if len(returning_list) >= 10:
+            if len(returning_list) >= 12:
                 break
 
     for sorted_tweet in sorted_list:
         if sorted_tweet[6] == "negative":
             returning_list.append(sorted_tweet)
-            if len(returning_list) >= 20:
+            if len(returning_list) >= 24:
                 break
     
     return returning_list

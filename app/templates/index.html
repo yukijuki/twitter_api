@@ -10,11 +10,12 @@
 {% block form %}
 <form action="/" method="POST">
     <div class="form-group">
-        <h5>4630万円の誤送金は返還すべき？</h5>
         <label class="form-label" for="formGroupExampleInput">検索ワード一覧</label>
-        <input type="text" maxlength="20" class="form-control" id="formGroupExampleInput" name="search_word" placeholder="4630万円の誤送金は返還すべき？" required>
+        <input type="text" maxlength="25" class="form-control" id="formGroupExampleInput" name="search_word" placeholder="4630万円の誤送金は返還すべき？" required>
     </div>
-    <button class="btn btn-primary mb-2" type="submit">送信</button>
+    <div>
+        <button class="btn btn-primary mb-2" type="submit">送信</button>
+    </div>
 </form>
 {% endblock %} 
 
@@ -30,8 +31,9 @@
         <div class="card">
             <div class="card-body">
                 <p class="">{{ tweet[3] }}</p>
-                <span class="badge bg-soft-success text-success">返信数: </i>{{ tweet[5] }}件</span>
-                <span onclick="{{ tweet[0] }}"class="badge rounded-pill bg-soft-info text-info">{{ tweet[7] }}</span>
+                <span class="badge bg-soft-success text-success">返信数: {{ tweet[5] }}件</span>
+                <span class="badge rounded-pill bg-soft-warning text-warning">{{ tweet[7] }}</span>
+                <span class="badge rounded-pill bg-soft-primary text-primary">感情: {{ tweet[8] }}</span>
             </div>
         </div>
     </div>
@@ -43,11 +45,12 @@
 {% for tweet in list_response %}
 {% if tweet[6] == "negative" %}
     <div class="col-6 col-sm-4">
-        <div class="card" onclick="{{ tweet[0] }}">
+        <div class="card">
             <div class="card-body">
                 <p class="">{{ tweet[3] }}</p>
-                <span class="badge bg-soft-success text-success">返信数: </i>{{ tweet[5] }}件</span>
-                <span onclick="{{ tweet[0] }}"class="badge rounded-pill bg-soft-info text-info">{{ tweet[7] }}</span>
+                <span class="badge bg-soft-success text-success">返信数: {{ tweet[5] }}件</span>
+                <span class="badge rounded-pill bg-soft-warning text-warning">{{ tweet[7] }}</span>
+                <span class="badge rounded-pill bg-soft-primary text-primary">感情: {{ tweet[8] }}</span>
             </div>
         </div>
     </div>
