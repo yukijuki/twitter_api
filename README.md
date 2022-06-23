@@ -1,7 +1,7 @@
 For You to run this!
 
 Lang
-install python 3.7
+install python 3.9
 
 Env
 0. pip install pipenv
@@ -13,5 +13,3 @@ Env
 Make sure to add libraries to requirements.txt
 0. pip freeze > requirements.txt
 
-Presentation file
-https://docs.google.com/presentation/d/1ng3kuyBBTVp9S_Av_0ApXqiGelCEkkOc2Fl-0Pi4C6A/edit?usp=sharing
