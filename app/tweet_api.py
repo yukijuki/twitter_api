@@ -1,6 +1,5 @@
 from urllib import response
 from app.sentiment_analysis import convert
-from flask import flash
 import requests
 import re
 
