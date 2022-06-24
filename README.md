@@ -18,4 +18,4 @@ https://cloud.google.com/sdk/docs/install-sdk
 https://qiita.com/dss_ben/items/d30265c01d3999d32baa
 
 heroku login --interactive
-git push heroku master
+git push heroku main
