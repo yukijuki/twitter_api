@@ -1,8 +1,0 @@
-runtime: 'custom'
-steps:
-- name: 'ubuntu'
-  args: ['sleep', '1000']
-  timeout: 1000s
-- name: 'ubuntu'
-  args: ['echo', 'hello world, after 1000s']
-timeout: 1000s
