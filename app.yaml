@@ -14,4 +14,4 @@ entrypoint: gunicorn -b :$PORT main:app
 env_variables:
   PKL_BUCKET:  'project-id.appspot.com'
 
-timeout: 1800
+timeout: '1600s'
