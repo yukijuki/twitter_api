@@ -1,4 +1,4 @@
-runtime: custom
+runtime: 'custom'
 steps:
 - name: 'ubuntu'
   args: ['sleep', '1000']
