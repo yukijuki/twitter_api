@@ -17,7 +17,7 @@ readiness_check:
   timeout_sec: 40
   failure_threshold: 5
   success_threshold: 5
-  app_start_timeout_sec: 2800
+  app_start_timeout_sec: 3600
                              
 entrypoint: gunicorn -b :$PORT main:app
 
