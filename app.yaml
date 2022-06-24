@@ -13,6 +13,11 @@ automatic_scaling:
   max_num_instances: 5
 readiness_check:
   path: "/readiness_check"
+  check_interval_sec: 120
+  timeout_sec: 40
+  failure_threshold: 5
+  success_threshold: 5
+  app_start_timeout_sec: 1500
                              
 entrypoint: gunicorn -b :$PORT main:app
 
