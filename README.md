@@ -13,3 +13,9 @@ Env
 Make sure to add libraries to requirements.txt
 0. pip freeze > requirements.txt
 
+cloud build error
+https://cloud.google.com/sdk/docs/install-sdk
+https://qiita.com/dss_ben/items/d30265c01d3999d32baa
+
+heroku login --interactive
+git push heroku main
