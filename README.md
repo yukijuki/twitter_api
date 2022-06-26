@@ -18,4 +18,9 @@ https://cloud.google.com/sdk/docs/install-sdk
 https://qiita.com/dss_ben/items/d30265c01d3999d32baa
 
 heroku login --interactive
-git push heroku main
+git push heroku master
+
+python -m pip install -–upgrade pip
+pip install -–upgrade wheel
+pip install -–upgrade setuptools
+pip install gensim OR pip3 install gensim
