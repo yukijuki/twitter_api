@@ -4,11 +4,11 @@
 {% endblock %} 
 
 {% block title %}
-<title>2nd Opinion/Home</title>
+<title>Home</title>
 {% endblock %} 
 
 {% block form %}
-<form action="/" method="POST">
+<form action="/" method="GET">
     <div class="form-group">
         <label class="form-label" for="formGroupExampleInput">検索ワード一覧</label>
         <input type="text" maxlength="25" class="form-control" id="formGroupExampleInput" name="search_word" placeholder="4630万円の誤送金は返還すべき？" required>
@@ -22,18 +22,21 @@
 
 
 {% block content %}
+<!-- Title -->
+<h1 class="h2 mb-0 ls-tight">検索してね</h1>
+
 {% if list_response %} 
 <div class="row gy-5">
 <h2> 直近の肯定的な意見</h2>
 {% for tweet in list_response %}
-{% if tweet[6] == "positive" %}
+{% if tweet[2] == "positive" %}
     <div class="col-6 col-sm-4">
         <div class="card">
             <div class="card-body">
-                <p class="">{{ tweet[3] }}</p>
-                <span class="badge bg-soft-success text-success">返信数: {{ tweet[5] }}件</span>
-                <span class="badge rounded-pill bg-soft-warning text-warning">{{ tweet[7] }}</span>
-                <span class="badge rounded-pill bg-soft-primary text-primary">感情: {{ tweet[8] }}</span>
+                <p class="">{{ tweet[1] }}</p>
+                <span class="badge bg-soft-success text-success">リツイート数: {{ tweet[6] }}件</span>
+                <span class="badge rounded-pill bg-soft-warning text-warning">{{ tweet[3] }}</span>
+                <span class="badge rounded-pill bg-soft-primary text-primary">感情: {{ tweet[4] }}</span>
             </div>
         </div>
     </div>
@@ -43,14 +46,14 @@
 
 <h2> 直近の否定的な意見</h2>
 {% for tweet in list_response %}
-{% if tweet[6] == "negative" %}
+{% if tweet[2] == "negative" %}
     <div class="col-6 col-sm-4">
         <div class="card">
             <div class="card-body">
-                <p class="">{{ tweet[3] }}</p>
-                <span class="badge bg-soft-success text-success">返信数: {{ tweet[5] }}件</span>
-                <span class="badge rounded-pill bg-soft-warning text-warning">{{ tweet[7] }}</span>
-                <span class="badge rounded-pill bg-soft-primary text-primary">感情: {{ tweet[8] }}</span>
+                <p class="">{{ tweet[1] }}</p>
+                <span class="badge bg-soft-success text-success">リツイート数: {{ tweet[6] }}件</span>
+                <span class="badge rounded-pill bg-soft-warning text-warning">{{ tweet[3] }}</span>
+                <span class="badge rounded-pill bg-soft-primary text-primary">感情: {{ tweet[4] }}</span>
             </div>
         </div>
     </div>

@@ -22,7 +22,7 @@ def bearer_oauth(r):
 
 def get_tweets(search_word):
 
-    search_url = endpoint + '?query={}%20-is%3Aretweet&expansions=author_id&tweet.fields={}&max_results=100'.format(search_word, tweet_field)
+    search_url = endpoint + '?query={}%20-is%3Aretweet -is:retweet -is:reply&tweet.fields={}&max_results=100'.format(search_word, tweet_field)
 
     next_token_flag = True
     next_token = ""
@@ -41,7 +41,10 @@ def get_tweets(search_word):
         # call endpoint
         response = requests.get(endpoint_url, auth=bearer_oauth)
         if response.status_code != 200:
-            raise Exception(response.status_code, response.text)
+            if response.status_code == 429:
+                return "429"
+            else:
+                raise Exception(response.status_code, response.text)
 
         #orgnize list
         if response.json()["meta"]["result_count"] == 0:
@@ -58,20 +61,21 @@ def get_tweets(search_word):
                     else:
                         strength = sentiment["classes"][1]["confidence"]
                     tweet.append("https://twitter.com/tweet/status/" + tweet_data["id"])
-                    tweet.append(tweet_data["author_id"])
-                    tweet.append(tweet_data["created_at"])
                     tweet.append(tweet_data["text"])
-                    tweet.append(tweet_data["public_metrics"]["like_count"])
-                    tweet.append(tweet_data["public_metrics"]["reply_count"])
                     tweet.append(sentiment["top_class"])
                     tweet.append("検索ワード: " + search_word)
                     tweet.append('{:.0%}'.format(strength))
+                    tweet.append(tweet_data["created_at"])
+                    tweet.append(tweet_data["public_metrics"]["retweet_count"])
+                    tweet.append(strength)
+                    # tweet.append(tweet_data["public_metrics"]["reply_count"])
+                    # tweet.append(tweet_data["author_id"])
                     tweets_list.append(tweet)
             except KeyError:
                 tweet.append(" ")
   
-        if request_iterator > 5: # 180requestを超えたら止める
-            print('5リクエストを超えるため、中止します')
+        if request_iterator > 4: # 5requestを超えたら止める
+            print('4リクエストを超えるため、中止します')
             break
 
         #adding count
@@ -90,18 +94,18 @@ def get_tweets(search_word):
 
 def sort_tweets(list):
     returning_list =[]
-    sorted_list = sorted(list, reverse=True, key=lambda x: x[8])
+    sorted_list = sorted(list, reverse=True, key=lambda x: x[7])
 
     for sorted_tweet in sorted_list:
-        if sorted_tweet[6] == "positive":
+        if sorted_tweet[2] == "positive":
             returning_list.append(sorted_tweet)
-            if len(returning_list) >= 12:
+            if len(returning_list) >= 9:
                 break
 
     for sorted_tweet in sorted_list:
-        if sorted_tweet[6] == "negative":
+        if sorted_tweet[2] == "negative":
             returning_list.append(sorted_tweet)
-            if len(returning_list) >= 24:
+            if len(returning_list) >= 9:
                 break
     
     return returning_list
@@ -109,6 +113,8 @@ def sort_tweets(list):
 
 def trend():
     trend_response = requests.get("https://api.twitter.com/1.1/trends/place.json?id=23424856", auth=bearer_oauth)
+    #    var url = API_URL + "users/" + sample_user_id + "/tweets" + `?expansions=author_id,attachments.media_keys&tweet.fields=${tweet_field}&media.fields=${media_field}&max_results=100&exclude=retweets,replies`
+
     if trend_response.status_code != 200:
             raise Exception(trend_response.status_code, trend_response.text)
     return  trend_response
