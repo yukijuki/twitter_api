@@ -8,6 +8,8 @@
 {% endblock %} 
 
 {% block form %}
+<h1 class="h2 mb-0 ls-tight">検索してね</h1>
+
 <form action="/" method="GET">
     <div class="form-group">
         <label class="form-label" for="formGroupExampleInput">検索ワード一覧</label>
@@ -22,44 +24,52 @@
 
 
 {% block content %}
-<!-- Title -->
-<h1 class="h2 mb-0 ls-tight">検索してね</h1>
+
+{% if positive_ratio %} 
+<div class="pb-5">
+    <h2>この検索ワードの肯定派率</h2>
+    <div class="progress progress-lg">
+        <div class="progress-bar bg-primary" role="progressbar" style="width: {{ positive_ratio }};" aria-valuenow="{{ positive_ratio }}" aria-valuemin="0" aria-valuemax="100">{{ positive_ratio }}</div>
+    </div>
+</div>
+<br>
+{% endif %}
 
 {% if list_response %} 
 <div class="row gy-5">
-<h2> 直近の肯定的な意見</h2>
-{% for tweet in list_response %}
-{% if tweet[2] == "positive" %}
-    <div class="col-6 col-sm-4">
-        <div class="card">
-            <div class="card-body">
-                <p class="">{{ tweet[1] }}</p>
-                <span class="badge bg-soft-success text-success">リツイート数: {{ tweet[6] }}件</span>
-                <span class="badge rounded-pill bg-soft-warning text-warning">{{ tweet[3] }}</span>
-                <span class="badge rounded-pill bg-soft-primary text-primary">感情: {{ tweet[4] }}</span>
+    <h2>直近の肯定的な意見</h2>
+    {% for tweet in list_response %}
+    {% if tweet[2] == "positive" %}
+        <div class="col-6 col-sm-4">
+            <div class="card">
+                <div class="card-body">
+                    <p class="">{{ tweet[1] }}</p>
+                    <span class="badge bg-soft-success text-success">リツイート数: {{ tweet[6] }}件</span>
+                    <span class="badge rounded-pill bg-soft-warning text-warning">{{ tweet[3] }}</span>
+                    <span class="badge rounded-pill bg-soft-primary text-primary">感情: {{ tweet[4] }}</span>
+                </div>
             </div>
         </div>
-    </div>
-{% endif %}
-{% else %}
-{% endfor %} 
+    {% endif %}
+    {% else %}
+    {% endfor %} 
 
-<h2> 直近の否定的な意見</h2>
-{% for tweet in list_response %}
-{% if tweet[2] == "negative" %}
-    <div class="col-6 col-sm-4">
-        <div class="card">
-            <div class="card-body">
-                <p class="">{{ tweet[1] }}</p>
-                <span class="badge bg-soft-success text-success">リツイート数: {{ tweet[6] }}件</span>
-                <span class="badge rounded-pill bg-soft-warning text-warning">{{ tweet[3] }}</span>
-                <span class="badge rounded-pill bg-soft-primary text-primary">感情: {{ tweet[4] }}</span>
+    <h2> 直近の否定的な意見</h2>
+    {% for tweet in list_response %}
+    {% if tweet[2] == "negative" %}
+        <div class="col-6 col-sm-4">
+            <div class="card">
+                <div class="card-body">
+                    <p class="">{{ tweet[1] }}</p>
+                    <span class="badge bg-soft-success text-success">リツイート数: {{ tweet[6] }}件</span>
+                    <span class="badge rounded-pill bg-soft-warning text-warning">{{ tweet[3] }}</span>
+                    <span class="badge rounded-pill bg-soft-primary text-primary">感情: {{ tweet[4] }}</span>
+                </div>
             </div>
         </div>
-    </div>
-{% endif %}
-{% else %}
-{% endfor %} 
+    {% endif %}
+    {% else %}
+    {% endfor %} 
 </div>
 {% endif %}
 

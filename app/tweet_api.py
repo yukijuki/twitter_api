@@ -27,6 +27,8 @@ def get_tweets(search_word):
     next_token_flag = True
     next_token = ""
     tweets_list = []
+    positive_count = 0
+    negative_count = 0
     iterator, request_iterator = 0, 0
     endpoint_url = search_url
 
@@ -54,6 +56,10 @@ def get_tweets(search_word):
             tweet = []
             try:
                 sentiment = convert(tweet_data["text"])
+                if sentiment["top_class"] == "positive":
+                    positive_count += 1
+                if sentiment["top_class"] == "negative":
+                    negative_count += 1
                 if sentiment["classes"][0]["confidence"] >= 0.8 or sentiment["classes"][1]["confidence"] >= 0.8:
                     strength = 0
                     if sentiment["classes"][0]["confidence"] >= sentiment["classes"][1]["confidence"]:
@@ -90,7 +96,7 @@ def get_tweets(search_word):
             next_token_flag = False
 
     print(str(iterator)+"件のツイート / " + str(request_iterator)+"回目の検索")
-    return tweets_list
+    return tweets_list, positive_count, negative_count
 
 def sort_tweets(list):
     returning_list =[]
