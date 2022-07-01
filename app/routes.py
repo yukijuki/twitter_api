@@ -20,6 +20,8 @@ def home():
     negative_total_count = 0
     positive_ratio = None
 
+    trend_list = trend()
+
     #Return tweets found with search word
     passed_search_word = request.args.get('search_word')
     if passed_search_word is not None:
@@ -43,8 +45,8 @@ def home():
             #hanlding posi nega ratio bar
             all_count = positive_total_count + negative_total_count
             positive_ratio = '{:.0%}'.format(positive_total_count / all_count)
-
-    return render_template("index.html", list_response = list_of_sorted_tweets, list_of_search_word = list_of_search_word, positive_ratio=positive_ratio)
+    
+    return render_template("index.html", list_response = list_of_sorted_tweets, list_of_search_word = list_of_search_word, positive_ratio=positive_ratio, trend_list=trend_list)
 
 
 @app.route("/rate_limit", methods=["GET"])

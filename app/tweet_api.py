@@ -11,7 +11,9 @@ bearer_token = "AAAAAAAAAAAAAAAAAAAAAEsCcwEAAAAA8%2Fvq5bNbOZ899YVCTq1Y8y0uxoA%3D
 
 #Configs
 endpoint = "https://api.twitter.com/2/tweets/search/recent"
-tweet_field = "id,created_at,public_metrics,text,author_id,entities"
+endpoint2 = "https://api.twitter.com/2/users/"
+nhk_news_twitter_id = "204245399"
+tweet_field = "id,created_at,public_metrics,text,entities"
 media_field = "media_key,preview_image_url,url"
 
 
@@ -79,9 +81,9 @@ def get_tweets(search_word):
                     tweets_list.append(tweet)
             except KeyError:
                 tweet.append(" ")
-  
-        if request_iterator > 4: # 5requestを超えたら止める
-            print('4リクエストを超えるため、中止します')
+
+        if request_iterator > 2:
+            print('3リクエストを超えるため、中止します')
             break
 
         #adding count
@@ -95,7 +97,7 @@ def get_tweets(search_word):
         except KeyError:
             next_token_flag = False
 
-    print(str(iterator)+"件のツイート / " + str(request_iterator)+"回目の検索")
+    print(str(iterator)+"件のツイート / " + str(request_iterator)+"回検索")
     return tweets_list, positive_count, negative_count
 
 def sort_tweets(list):
@@ -118,9 +120,31 @@ def sort_tweets(list):
 
 
 def trend():
-    trend_response = requests.get("https://api.twitter.com/1.1/trends/place.json?id=23424856", auth=bearer_oauth)
-    #    var url = API_URL + "users/" + sample_user_id + "/tweets" + `?expansions=author_id,attachments.media_keys&tweet.fields=${tweet_field}&media.fields=${media_field}&max_results=100&exclude=retweets,replies`
+    trend_list = []
+    timeline_url = endpoint2 + nhk_news_twitter_id + "/tweets" + "?expansions=author_id,attachments.media_keys&tweet.fields={}&max_results=100&exclude=retweets,replies".format(tweet_field)
 
+    # call endpoint
+    trend_response = requests.get(timeline_url, auth=bearer_oauth)
     if trend_response.status_code != 200:
+        if trend_response.status_code == 429:
+            return "429"
+        else:
             raise Exception(trend_response.status_code, trend_response.text)
-    return  trend_response
+    
+    #orgnize list
+    trend_data_response = trend_response.json()["data"]
+    for trend_data in trend_data_response:
+        trend = []
+        try:
+            if trend_data["entities"]["hashtags"][0]["tag"] == "nhk_news":
+                trend.append(trend_data["text"][:-34])
+                trend.append(trend_data["created_at"])
+                trend.append(trend_data["public_metrics"]["like_count"])
+                trend_list.append(trend)
+        except KeyError:
+            pass
+    sorted_list = sorted(trend_list, reverse=True, key=lambda x: x[2])
+
+    if len(sorted_list) >= 10:
+        sorted_list = sorted_list[0:10]
+    return sorted_list
