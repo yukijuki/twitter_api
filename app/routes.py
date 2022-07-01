@@ -39,7 +39,9 @@ def home():
         if len(returning_tweets_list) == 0:
             flash("検索結果が見つかりませんでした。")
         else:
+            print("Not distinct Tweest", returning_tweets_list)
             returning_distinct_tweets = list(map(list, set(map(tuple, returning_tweets_list))))
+            print("distinct Tweest", returning_distinct_tweets)
             list_of_sorted_tweets = sort_tweets(returning_distinct_tweets)
 
             #hanlding posi nega ratio bar
