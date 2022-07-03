@@ -13,7 +13,7 @@
 <form action="/" method="GET">
     <div class="form-group">
         <label class="form-label" for="formGroupExampleInput">検索ワード一覧</label>
-        <input type="text" maxlength="30" class="form-control" id="formGroupExampleInput" name="search_word" placeholder="4630万円の誤送金は返還すべき？" required>
+        <input type="text" maxlength="30" class="form-control" id="formGroupExampleInput" name="search_word" placeholder="気になることを検索してみよう" required>
     </div>
     <div>
         <button class="btn btn-primary mb-2" type="submit">送信</button>
@@ -41,9 +41,9 @@
 
 {% if positive_ratio %} 
 <div class="pb-5">
-    <h2>この検索ワードの肯定派率</h2>
+    <h2>お題のポジティブ度</h2>
     <div class="progress progress-lg">
-        <div class="progress-bar bg-primary" role="progressbar" style="width: {{ positive_ratio }};" aria-valuenow="{{ positive_ratio }}" aria-valuemin="0" aria-valuemax="100">{{ positive_ratio }}</div>
+        <div class="progress-bar bg-primary" role="progressbar" style="width: {{ positive_ratio }};" aria-valuenow="{{ positive_ratio }}" aria-valuemin="0" aria-valuemax="100">{{ positive_ratio }}が肯定的なツイートです</div>
     </div>
 </div>
 <br>
@@ -58,9 +58,8 @@
             <div class="card">
                 <div class="card-body">
                     <p class="">{{ tweet[1] }}</p>
-                    <span class="badge bg-soft-success text-success">リツイート数: {{ tweet[6] }}件</span>
-                    <span class="badge rounded-pill bg-soft-warning text-warning">{{ tweet[3] }}</span>
-                    <span class="badge rounded-pill bg-soft-primary text-primary">感情: {{ tweet[4] }}</span>
+                    <span class="badge bg-soft-success text-success">リツイート数: {{ tweet[5] }}件</span>
+                    <span class="badge rounded-pill bg-soft-primary text-primary">感情: {{ tweet[3] }}</span>
                 </div>
             </div>
         </div>
@@ -75,9 +74,8 @@
             <div class="card">
                 <div class="card-body">
                     <p class="">{{ tweet[1] }}</p>
-                    <span class="badge bg-soft-success text-success">リツイート数: {{ tweet[6] }}件</span>
-                    <span class="badge rounded-pill bg-soft-warning text-warning">{{ tweet[3] }}</span>
-                    <span class="badge rounded-pill bg-soft-primary text-primary">感情: {{ tweet[4] }}</span>
+                    <span class="badge bg-soft-success text-success">リツイート数: {{ tweet[5] }}件</span>
+                    <span class="badge rounded-pill bg-soft-primary text-primary">感情: {{ tweet[3] }}</span>
                 </div>
             </div>
         </div>

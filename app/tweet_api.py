@@ -62,7 +62,7 @@ def get_tweets(search_word):
                     positive_count += 1
                 if sentiment["top_class"] == "negative":
                     negative_count += 1
-                if sentiment["classes"][0]["confidence"] >= 0.8 or sentiment["classes"][1]["confidence"] >= 0.8:
+                if sentiment["classes"][0]["confidence"] >= 0.8 or sentiment["classes"][1]["confidence"] >= 0.7:
                     strength = 0
                     if sentiment["classes"][0]["confidence"] >= sentiment["classes"][1]["confidence"]:
                         strength = sentiment["classes"][0]["confidence"]
@@ -71,7 +71,6 @@ def get_tweets(search_word):
                     tweet.append("https://twitter.com/tweet/status/" + tweet_data["id"])
                     tweet.append(tweet_data["text"])
                     tweet.append(sentiment["top_class"])
-                    tweet.append("検索ワード: " + search_word)
                     tweet.append('{:.0%}'.format(strength))
                     tweet.append(tweet_data["created_at"])
                     tweet.append(tweet_data["public_metrics"]["retweet_count"])
@@ -81,7 +80,8 @@ def get_tweets(search_word):
                     tweets_list.append(tweet)
             except KeyError:
                 tweet.append(" ")
-
+        
+        
         if request_iterator > 2:
             print('3リクエストを超えるため、中止します')
             break
@@ -102,7 +102,7 @@ def get_tweets(search_word):
 
 def sort_tweets(list):
     returning_list =[]
-    sorted_list = sorted(list, reverse=True, key=lambda x: x[7])
+    sorted_list = sorted(list, reverse=True, key=lambda x: x[6])
 
     for sorted_tweet in sorted_list:
         if sorted_tweet[2] == "positive":
