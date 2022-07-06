@@ -82,8 +82,8 @@ def get_tweets(search_word):
                 tweet.append(" ")
         
         
-        if request_iterator > 2:
-            print('3リクエストを超えるため、中止します')
+        if request_iterator > 4:
+            print('5リクエストを超えるため、中止します')
             break
 
         #adding count

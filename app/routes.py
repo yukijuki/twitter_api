@@ -1,5 +1,5 @@
 from flask import request, render_template, session, redirect, url_for
-from app import app
+from app import application
 from app.tweet_api import get_tweets, sort_tweets, trend
 from app.morphological_analysis import range_word_list
 from flask import flash
@@ -10,7 +10,7 @@ from flask import flash
 # def index():
 #     return render_template("index.html")
 
-@app.route("/", methods=["GET"])
+@application.route("/", methods=["GET"])
 def home():
     #List preparartion
     returning_tweets_list = []
@@ -51,10 +51,10 @@ def home():
     return render_template("index.html", list_response = list_of_sorted_tweets, list_of_search_word = list_of_search_word, positive_ratio=positive_ratio, trend_list=trend_list)
 
 
-@app.route("/rate_limit", methods=["GET"])
+@application.route("/rate_limit", methods=["GET"])
 def rate_limit():
     return render_template("rate_limit.html")
 
-@app.route("/login", methods=["GET"])
+@application.route("/login", methods=["GET"])
 def login():
     return render_template("login.html")
