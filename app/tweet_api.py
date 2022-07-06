@@ -22,37 +22,37 @@ def bearer_oauth(r):
     r.headers["User-Agent"] = "v2RecentSearchPython"
     return r
 
-def get_tweets(search_word):
+def get_tweets(search_word, token):
 
-    search_url = endpoint + '?query={}%20-is%3Aretweet -is:retweet -is:reply&tweet.fields={}&max_results=100'.format(search_word, tweet_field)
+    endpoint_url = endpoint + '?query={}%20-is%3Aretweet -is:reply -is:retweet&tweet.fields={}&max_results=100'.format(search_word, tweet_field)
 
-    next_token_flag = True
-    next_token = ""
+    if token == None:
+            pass
+    else:
+        endpoint_url = endpoint_url + '&pagination_token={}'.format(token)
+    
+    tweets_list, positive_count, negative_count, next_token, previous_token = call_twitter_api(endpoint_url, token)
+
+    return tweets_list, positive_count, negative_count, next_token, previous_token
+
+def call_twitter_api(endpoint_url, token):
+
     tweets_list = []
+    next_token = None
+    previous_token = None
     positive_count = 0
     negative_count = 0
-    iterator, request_iterator = 0, 0
-    endpoint_url = search_url
 
-    while next_token_flag:
-
-        #check next token
-        if next_token == "":
-            pass
+    # call endpoint
+    response = requests.get(endpoint_url, auth=bearer_oauth)
+    if response.status_code != 200:
+        if response.status_code == 429:
+            return "429"
         else:
-            endpoint_url = search_url + next_token
+            raise Exception(response.status_code, response.text)
 
-        # call endpoint
-        response = requests.get(endpoint_url, auth=bearer_oauth)
-        if response.status_code != 200:
-            if response.status_code == 429:
-                return "429"
-            else:
-                raise Exception(response.status_code, response.text)
-
-        #orgnize list
-        if response.json()["meta"]["result_count"] == 0:
-            break
+    #orgnize list
+    if response.json()["meta"]["result_count"] != 0:
         data_response = response.json()["data"]
         for tweet_data in data_response:
             tweet = []
@@ -80,25 +80,17 @@ def get_tweets(search_word):
                     tweets_list.append(tweet)
             except KeyError:
                 tweet.append(" ")
-        
-        
-        if request_iterator > 2:
-            print('3リクエストを超えるため、中止します')
-            break
-
-        #adding count
-        request_iterator += 1
-        iterator += response.json()['meta']['result_count']
-
         #handling pagination
-        try:
-            if response.json()["meta"]["next_token"]:
-                next_token = '&pagination_token={}'.format(response.json()["meta"]["next_token"])
-        except KeyError:
-            next_token_flag = False
-
-    print(str(iterator)+"件のツイート / " + str(request_iterator)+"回検索")
-    return tweets_list, positive_count, negative_count
+    print(response.json()["meta"])
+    try:
+        if response.json()["meta"]["next_token"]:
+            next_token = response.json()["meta"]["next_token"]
+        previous_token = token
+    except KeyError:
+        pass
+    
+    return tweets_list, positive_count, negative_count, next_token, previous_token
+    
 
 def sort_tweets(list):
     returning_list =[]

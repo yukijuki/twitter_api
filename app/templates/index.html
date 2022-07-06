@@ -39,19 +39,18 @@
 </div>
 {% endif %}
 
-{% if positive_ratio %} 
 <div class="pb-5">
-    <h2>お題のポジティブ度</h2>
+    <h2>直近の肯定的な意見</h2>
+    {% if positive_ratio %} 
     <div class="progress progress-lg">
         <div class="progress-bar bg-primary" role="progressbar" style="width: {{ positive_ratio }};" aria-valuenow="{{ positive_ratio }}" aria-valuemin="0" aria-valuemax="100">{{ positive_ratio }}が肯定的なツイートです</div>
     </div>
+    {% endif %}
 </div>
-<br>
-{% endif %}
+
 
 {% if list_response %} 
 <div class="row gy-5">
-    <h2>直近の肯定的な意見</h2>
     {% for tweet in list_response %}
     {% if tweet[2] == "positive" %}
         <div class="col-6 col-sm-4">
@@ -84,5 +83,27 @@
     {% endfor %} 
 </div>
 {% endif %}
+{% endblock %} 
 
-{% endblock content %} 
+{% block pagination %}
+<div class="pb-5">
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            {% if previous_pagination_values %} 
+            <li class="page-item">
+                <a class="page-link" href="/?search_word=dummy&pagination_value=previous_token">
+                    <i class="bi bi-chevron-left">前に戻る</i>
+                </a>
+            </li>
+            {% endif %}
+            {% if next_pagination_values %} 
+            <li class="page-item">
+                <a class="page-link" href="/?search_word=dummy&pagination_value=next_token">
+                    <i class="bi bi-chevron-right">次を見る</i>
+                </a>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
+</div>
+{% endblock %} 

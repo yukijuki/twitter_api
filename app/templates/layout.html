@@ -3,11 +3,11 @@
 
     <head>
         <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-wdith, initial-scale=1.0,　user-scalable=no">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <link href="https://unpkg.com/@webpixels/css/dist/index.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
         <link rel ="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-        <link rel="stylesheet" href="{{ url_for('static', filename='card.css') }}"/>
 
     </head>
 
@@ -55,6 +55,8 @@
             <div class="container-xl">
                 {% block content %}     
                 {% endblock %}
+                {% block pagination %}
+                {% endblock %}
             </div>
         </main>
         <script>
@@ -62,7 +64,7 @@
                 $('.alert-success').delay(1000).slideUp(500);
             });
         </script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
     </body>
 
 </html>

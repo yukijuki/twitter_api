@@ -23,7 +23,7 @@ def range_word_list(sentence):
     if len(search_noun_word) > 3:
         search_noun_word_replace = []
         for token in tokenizer.tokenize(sentence):
-            print(token)
+            #print(token)
             if token.part_of_speech.split(',')[0] == "名詞" and token.part_of_speech.split(',')[1] in ["一般", "固有名詞"]:
                 if token.surface not in fliter_word_list:
                     search_noun_word_replace.append(token.surface)
