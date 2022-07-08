@@ -149,7 +149,7 @@ def trend():
 
 def distinct_sort(tweet_list):
     df = pd.DataFrame(tweet_list, columns =['id','text','top_class', 'strength_in_%', 'created_at', 'retweet_count', 'strength', 'search_word'])
-    distinct_df = df.drop_duplicates(subset='id')
+    distinct_df = df.drop_duplicates(subset='id¡∑ßzAQ')
 
     df_positive = distinct_df[distinct_df["top_class"] == "positive"].sort_values('strength', ascending=False).head(12).to_numpy().tolist()
     df_negative = distinct_df[distinct_df["top_class"] == "negative"].sort_values('strength', ascending=False).head(12).to_numpy().tolist()
