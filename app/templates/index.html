@@ -49,38 +49,44 @@
 <br>
 {% endif %}
 
-{% if list_response %} 
+{% if df_positive %} 
 <div class="row gy-5">
     <h2>直近の肯定的な意見</h2>
-    {% for tweet in list_response %}
+    {% for tweet in df_positive %}
     {% if tweet[2] == "positive" %}
         <div class="col-6 col-sm-4">
             <div class="card">
                 <div class="card-body">
                     <p class="">{{ tweet[1] }}</p>
-                    <span class="badge bg-soft-success text-success">リツイート数: {{ tweet[5] }}件</span>
+                    <span class="badge rounded-pill bg-info">リツイート数: {{ tweet[5] }}件</span>
+                    <span class="badge rounded-pill bg-warning">検索ワード: {{ tweet[7] }}件</span>
                     <span class="badge rounded-pill bg-soft-primary text-primary">感情: {{ tweet[3] }}</span>
                 </div>
             </div>
         </div>
     {% endif %}
     {% else %}
+    <h2> 検索結果がありませんでした</h2>
     {% endfor %} 
+{% endif %}
 
+{% if df_negative %} 
     <h2> 直近の否定的な意見</h2>
-    {% for tweet in list_response %}
+    {% for tweet in df_negative %}
     {% if tweet[2] == "negative" %}
         <div class="col-6 col-sm-4">
             <div class="card">
                 <div class="card-body">
                     <p class="">{{ tweet[1] }}</p>
-                    <span class="badge bg-soft-success text-success">リツイート数: {{ tweet[5] }}件</span>
+                    <span class="badge rounded-pill bg-info">リツイート数: {{ tweet[5] }}件</span>
+                    <span class="badge rounded-pill bg-warning">検索ワード: {{ tweet[7] }}件</span>
                     <span class="badge rounded-pill bg-soft-primary text-primary">感情: {{ tweet[3] }}</span>
                 </div>
             </div>
         </div>
     {% endif %}
     {% else %}
+    <h2> 検索結果がありませんでした</h2>
     {% endfor %} 
 </div>
 {% endif %}

@@ -2,6 +2,8 @@ from urllib import response
 from app.sentiment_analysis import convert
 import requests
 import re
+import pandas as pd
+
 
 
 #const variables
@@ -29,8 +31,6 @@ def get_tweets(search_word):
     next_token_flag = True
     next_token = ""
     tweets_list = []
-    positive_count = 0
-    negative_count = 0
     iterator, request_iterator = 0, 0
     endpoint_url = search_url
 
@@ -58,11 +58,8 @@ def get_tweets(search_word):
             tweet = []
             try:
                 sentiment = convert(tweet_data["text"])
-                if sentiment["top_class"] == "positive":
-                    positive_count += 1
-                if sentiment["top_class"] == "negative":
-                    negative_count += 1
-                if sentiment["classes"][0]["confidence"] >= 0.8 or sentiment["classes"][1]["confidence"] >= 0.7:
+
+                if sentiment["classes"][0]["confidence"] >= 0.7 or sentiment["classes"][1]["confidence"] >= 0.7:
                     strength = 0
                     if sentiment["classes"][0]["confidence"] >= sentiment["classes"][1]["confidence"]:
                         strength = sentiment["classes"][0]["confidence"]
@@ -75,6 +72,7 @@ def get_tweets(search_word):
                     tweet.append(tweet_data["created_at"])
                     tweet.append(tweet_data["public_metrics"]["retweet_count"])
                     tweet.append(strength)
+                    tweet.append(search_word)
                     # tweet.append(tweet_data["public_metrics"]["reply_count"])
                     # tweet.append(tweet_data["author_id"])
                     tweets_list.append(tweet)
@@ -98,25 +96,25 @@ def get_tweets(search_word):
             next_token_flag = False
 
     print(str(iterator)+"件のツイート / " + str(request_iterator)+"回検索")
-    return tweets_list, positive_count, negative_count
+    return tweets_list
 
-def sort_tweets(list):
-    returning_list =[]
-    sorted_list = sorted(list, reverse=True, key=lambda x: x[6])
+# def sort_tweets(list):
+#     returning_list =[]
+#     sorted_list = sorted(list, reverse=True, key=lambda x: x[6])
 
-    for sorted_tweet in sorted_list:
-        if sorted_tweet[2] == "positive":
-            returning_list.append(sorted_tweet)
-            if len(returning_list) >= 9:
-                break
+#     for sorted_tweet in sorted_list:
+#         if sorted_tweet[2] == "positive":
+#             returning_list.append(sorted_tweet)
+#             if len(returning_list) >= 9:
+#                 break
 
-    for sorted_tweet in sorted_list:
-        if sorted_tweet[2] == "negative":
-            returning_list.append(sorted_tweet)
-            if len(returning_list) >= 9:
-                break
+#     for sorted_tweet in sorted_list:
+#         if sorted_tweet[2] == "negative":
+#             returning_list.append(sorted_tweet)
+#             if len(returning_list) >= 9:
+#                 break
     
-    return returning_list
+#     return returning_list
 
 
 def trend():
@@ -148,3 +146,19 @@ def trend():
     if len(sorted_list) >= 10:
         sorted_list = sorted_list[0:10]
     return sorted_list
+
+def distinct_sort(tweet_list):
+    df = pd.DataFrame(tweet_list, columns =['id','text','top_class', 'strength_in_%', 'created_at', 'retweet_count', 'strength', 'search_word'])
+    distinct_df = df.drop_duplicates(subset='id')
+
+    df_positive = distinct_df[distinct_df["top_class"] == "positive"].sort_values('strength', ascending=False).head(12).to_numpy().tolist()
+    df_negative = distinct_df[distinct_df["top_class"] == "negative"].sort_values('strength', ascending=False).head(12).to_numpy().tolist()
+
+    posi_nega_values = df[['top_class', 'strength']].groupby('top_class').sum()
+    l_records = posi_nega_values.to_dict(orient='list')
+    all_count = l_records["strength"][0] + l_records["strength"][1]
+
+    positive_ratio = '{:.0%}'.format(l_records["strength"][1] / all_count)
+    negative_ratio = '{:.0%}'.format(l_records["strength"][0] / all_count)
+
+    return df_positive, df_negative, positive_ratio, negative_ratio
