@@ -1,6 +1,6 @@
 from flask import request, render_template, session, redirect, url_for
 from app import application
-from app.tweet_api import get_tweets, trend, distinct_sort
+from app.tweet_api import get_tweets, distinct_sort
 from app.morphological_analysis import range_word_list
 from flask import flash
 
@@ -14,14 +14,14 @@ from flask import flash
 def home():
     #List preparartion
     returning_tweets_list = []
-    list_of_sorted_tweets = []
     list_of_search_word = []
     positive_ratio = None
     negative_ratio = None
     df_positive = []
     df_negative = []
+    trend_list = []
 
-    trend_list = trend()
+    #trend_list = trend()
 
     #Return tweets found with search word
     passed_search_word = request.args.get('search_word')

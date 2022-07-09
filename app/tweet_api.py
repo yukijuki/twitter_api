@@ -98,67 +98,53 @@ def get_tweets(search_word):
     print(str(iterator)+"件のツイート / " + str(request_iterator)+"回検索")
     return tweets_list
 
-# def sort_tweets(list):
-#     returning_list =[]
-#     sorted_list = sorted(list, reverse=True, key=lambda x: x[6])
 
-#     for sorted_tweet in sorted_list:
-#         if sorted_tweet[2] == "positive":
-#             returning_list.append(sorted_tweet)
-#             if len(returning_list) >= 9:
-#                 break
+# def trend():
+#     trend_list = []
+#     timeline_url = endpoint2 + nhk_news_twitter_id + "/tweets" + "?expansions=author_id,attachments.media_keys&tweet.fields={}&max_results=100&exclude=retweets,replies".format(tweet_field)
 
-#     for sorted_tweet in sorted_list:
-#         if sorted_tweet[2] == "negative":
-#             returning_list.append(sorted_tweet)
-#             if len(returning_list) >= 9:
-#                 break
+#     # call endpoint
+#     trend_response = requests.get(timeline_url, auth=bearer_oauth)
+#     if trend_response.status_code != 200:
+#         if trend_response.status_code == 429:
+#             return "429"
+#         else:
+#             raise Exception(trend_response.status_code, trend_response.text)
     
-#     return returning_list
+#     #orgnize list
+#     trend_data_response = trend_response.json()["data"]
+#     for trend_data in trend_data_response:
+#         trend = []
+#         try:
+#             if trend_data["entities"]["hashtags"][0]["tag"] == "nhk_news":
+#                 trend.append(trend_data["text"][:-34])
+#                 trend.append(trend_data["created_at"])
+#                 trend.append(trend_data["public_metrics"]["like_count"])
+#                 trend_list.append(trend)
+#         except KeyError:
+#             pass
+#     sorted_list = sorted(trend_list, reverse=True, key=lambda x: x[2])
 
-
-def trend():
-    trend_list = []
-    timeline_url = endpoint2 + nhk_news_twitter_id + "/tweets" + "?expansions=author_id,attachments.media_keys&tweet.fields={}&max_results=100&exclude=retweets,replies".format(tweet_field)
-
-    # call endpoint
-    trend_response = requests.get(timeline_url, auth=bearer_oauth)
-    if trend_response.status_code != 200:
-        if trend_response.status_code == 429:
-            return "429"
-        else:
-            raise Exception(trend_response.status_code, trend_response.text)
-    
-    #orgnize list
-    trend_data_response = trend_response.json()["data"]
-    for trend_data in trend_data_response:
-        trend = []
-        try:
-            if trend_data["entities"]["hashtags"][0]["tag"] == "nhk_news":
-                trend.append(trend_data["text"][:-34])
-                trend.append(trend_data["created_at"])
-                trend.append(trend_data["public_metrics"]["like_count"])
-                trend_list.append(trend)
-        except KeyError:
-            pass
-    sorted_list = sorted(trend_list, reverse=True, key=lambda x: x[2])
-
-    if len(sorted_list) >= 10:
-        sorted_list = sorted_list[0:10]
-    return sorted_list
+#     if len(sorted_list) >= 10:
+#         sorted_list = sorted_list[0:10]
+#     return sorted_list
 
 def distinct_sort(tweet_list):
+    positive_ratio = None
+    negative_ratio = None
+
     df = pd.DataFrame(tweet_list, columns =['id','text','top_class', 'strength_in_%', 'created_at', 'retweet_count', 'strength', 'search_word'])
-    distinct_df = df.drop_duplicates(subset='id¡∑ßzAQ')
+    distinct_df = df.drop_duplicates(subset='id')
 
     df_positive = distinct_df[distinct_df["top_class"] == "positive"].sort_values('strength', ascending=False).head(12).to_numpy().tolist()
     df_negative = distinct_df[distinct_df["top_class"] == "negative"].sort_values('strength', ascending=False).head(12).to_numpy().tolist()
 
     posi_nega_values = df[['top_class', 'strength']].groupby('top_class').sum()
     l_records = posi_nega_values.to_dict(orient='list')
-    all_count = l_records["strength"][0] + l_records["strength"][1]
-
-    positive_ratio = '{:.0%}'.format(l_records["strength"][1] / all_count)
-    negative_ratio = '{:.0%}'.format(l_records["strength"][0] / all_count)
+    
+    if len(l_records["strength"]) == 2:
+        all_count = l_records["strength"][0] + l_records["strength"][1]
+        positive_ratio = '{:.0%}'.format(l_records["strength"][1] / all_count)
+        negative_ratio = '{:.0%}'.format(l_records["strength"][0] / all_count)
 
     return df_positive, df_negative, positive_ratio, negative_ratio
