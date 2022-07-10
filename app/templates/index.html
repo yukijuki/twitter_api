@@ -12,8 +12,8 @@
 
 <form action="/" method="GET">
     <div class="form-group">
-        <label class="form-label" for="formGroupExampleInput">検索ワード一覧</label>
-        <input type="text" maxlength="30" class="form-control" id="formGroupExampleInput" name="search_word" placeholder="気になることを検索してみよう" required>
+        <label class="form-label" for="formGroupExampleInput">例：サービス + 機能名で検索</label>
+        <input type="text" maxlength="30" class="form-control" id="formGroupExampleInput" name="search_word" placeholder="PayPay オートチャージ" required>
     </div>
     <div>
         <button class="btn btn-primary button" type="submit">送信</button>
@@ -58,7 +58,7 @@
             <div class="card">
                 <div class="card-body">
                     <p class="">{{ tweet[1] }}</p>
-                    <span class="badge rounded-pill bg-soft-warning text-warning">検索ワード: {{ tweet[7] }}件</span>
+                    <span class="badge rounded-pill bg-soft-warning text-warning">検索ワード: {{ tweet[7] }}</span>
                     <span class="badge rounded-pill bg-soft-success text-success">感情: {{ tweet[3] }}</span>
                 </div>
             </div>
@@ -77,7 +77,7 @@
             <div class="card">
                 <div class="card-body">
                     <p class="">{{ tweet[1] }}</p>
-                    <span class="badge rounded-pill bg-soft-warning text-warning">検索ワード: {{ tweet[7] }}件</span>
+                    <span class="badge rounded-pill bg-soft-warning text-warning">検索ワード: {{ tweet[7] }}</span>
                     <span class="badge rounded-pill bg-soft-primary text-primary">感情: {{ tweet[3] }}</span>
                 </div>
             </div>
