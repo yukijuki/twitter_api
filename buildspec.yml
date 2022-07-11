@@ -1,0 +1,23 @@
+version: 0.2
+
+phases:
+  install:
+    run-as: root
+    on-failure: ABORT
+    runtime-versions:
+      runtime: 3.8
+    commands:
+      - echo 'hello'
+    finally:
+      - echo 'hello'
+      - echo 'hello'
+  pre_build:
+    run-as: root
+    on-failure: ABORT 
+    commands:
+      - pip install -r requirements.txt
+  post_build:
+    run-as: root
+    on-failure: ABORT
+    commands:
+      - echo 'done'
