@@ -5,7 +5,7 @@ phases:
     run-as: root
     on-failure: ABORT
     runtime-versions:
-      runtime: 3.8
+      python: 3.8
     commands:
       - echo 'hello'
     finally:
