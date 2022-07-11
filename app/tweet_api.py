@@ -99,36 +99,6 @@ def get_tweets(search_word):
     return tweets_list
 
 
-# def trend():
-#     trend_list = []
-#     timeline_url = endpoint2 + nhk_news_twitter_id + "/tweets" + "?expansions=author_id,attachments.media_keys&tweet.fields={}&max_results=100&exclude=retweets,replies".format(tweet_field)
-
-#     # call endpoint
-#     trend_response = requests.get(timeline_url, auth=bearer_oauth)
-#     if trend_response.status_code != 200:
-#         if trend_response.status_code == 429:
-#             return "429"
-#         else:
-#             raise Exception(trend_response.status_code, trend_response.text)
-    
-#     #orgnize list
-#     trend_data_response = trend_response.json()["data"]
-#     for trend_data in trend_data_response:
-#         trend = []
-#         try:
-#             if trend_data["entities"]["hashtags"][0]["tag"] == "nhk_news":
-#                 trend.append(trend_data["text"][:-34])
-#                 trend.append(trend_data["created_at"])
-#                 trend.append(trend_data["public_metrics"]["like_count"])
-#                 trend_list.append(trend)
-#         except KeyError:
-#             pass
-#     sorted_list = sorted(trend_list, reverse=True, key=lambda x: x[2])
-
-#     if len(sorted_list) >= 10:
-#         sorted_list = sorted_list[0:10]
-#     return sorted_list
-
 def distinct_sort(tweet_list):
     positive_ratio = None
     negative_ratio = None
