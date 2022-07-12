@@ -8,17 +8,23 @@
 {% endblock %} 
 
 {% block form %}
+
 <h1 class="h2 mb-0 ls-tight">検索してね</h1>
 
-<form action="/" method="GET">
+<form action="/" method="GET" name="form">
     <div class="form-group">
         <label class="form-label" for="formGroupExampleInput">例：サービス + 機能名で検索</label>
-        <input type="text" maxlength="30" class="form-control" id="formGroupExampleInput" name="search_word" placeholder="PayPay オートチャージ" required>
     </div>
-    <div>
-        <button class="btn btn-primary button" type="submit">送信</button>
+    <div class="input-group mb-3">
+        <input type="text" maxlength="30" class="form-control" id="formGroupExampleInput" name="search_word" placeholder="PayPay オートチャージ" required>
+        <div class="input-group-append">
+            <button class="btn btn-primary button" type="submit" id="search_button">検索</button>
+        </div>
     </div>
 </form>
+
+
+
 {% endblock %} 
 
 
@@ -39,19 +45,43 @@
 </div>
 {% endif %}
 
-{% if positive_ratio %} 
+{% if negative_ratio %} 
 <div class="pb-5">
-    <h2>お題のポジティブ度</h2>
+    <h2>お題のネガティブ度</h2>
     <div class="progress progress-lg">
-        <div class="progress-bar bg-primary" role="progressbar" style="width: {{ positive_ratio }};" aria-valuenow="{{ positive_ratio }}" aria-valuemin="0" aria-valuemax="100">{{ positive_ratio }}が肯定的なツイートです</div>
+        <div class="progress-bar bg-primary" role="progressbar" style="width: {{ negative_ratio }};" aria-valuenow="{{ negative_ratio }}" aria-valuemin="0" aria-valuemax="100">{{ negative_ratio }}</div>
     </div>
 </div>
 <br>
 {% endif %}
 
-{% if df_positive %} 
 <div class="row gy-5">
-    <h2>直近の肯定的な意見</h2>
+{% if df_negative %} 
+    <h2> 直近のユーザーの不満</h2>
+    {% for tweet in df_negative %}
+    {% if tweet[2] == "negative" %}
+        <div class="col-6 col-sm-4">
+            <div class="card">
+                <div class="card-body">
+                    <p class="">{{ tweet[1] }}</p>
+                    <span class="badge rounded-pill bg-soft-warning text-warning">検索ワード: {{ tweet[7] }}</span>
+                    <span class="badge rounded-pill bg-soft-primary text-primary">感情: {{ tweet[3] }}</span>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+    {% else %}
+    <h2> 検索結果がありませんでした</h2>
+    {% endfor %} 
+{% endif %}
+
+<!--
+                <button class="btn btn-primary" type="button" disabled>
+                <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+                時間がかかります...
+            </button>
+{% if df_positive %} 
+    <h2>直近のユーザーの満足な声</h2>
     {% for tweet in df_positive %}
     {% if tweet[2] == "positive" %}
         <div class="col-6 col-sm-4">
@@ -68,25 +98,6 @@
     <h2> 検索結果がありませんでした</h2>
     {% endfor %} 
 {% endif %}
-
-{% if df_negative %} 
-    <h2> 直近の否定的な意見</h2>
-    {% for tweet in df_negative %}
-    {% if tweet[2] == "negative" %}
-        <div class="col-6 col-sm-4">
-            <div class="card">
-                <div class="card-body">
-                    <p class="">{{ tweet[1] }}</p>
-                    <span class="badge rounded-pill bg-soft-warning text-warning">検索ワード: {{ tweet[7] }}</span>
-                    <span class="badge rounded-pill bg-soft-primary text-primary">感情: {{ tweet[3] }}</span>
-                </div>
-            </div>
-        </div>
-    {% endif %}
-    {% else %}
-    <h2> 検索結果がありませんでした</h2>
-    {% endfor %} 
+-->
 </div>
-{% endif %}
-
 {% endblock content %} 

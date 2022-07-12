@@ -20,6 +20,11 @@ def range_word_list(sentence):
     a = Analyzer(char_filters=char_filters, token_filters=[CompoundNounFilter(),POSKeepFilter(['名詞'])])
     search_noun_word = [token.surface for token in a.analyze(sentence)]
 
+    #special handling for specific cases
+    search_noun_word = ["あと払い" if value=="あと" else value for value in search_noun_word]
+
+        
+
     if len(search_noun_word) > 3:
         search_noun_word_replace = []
         for token in tokenizer.tokenize(sentence):

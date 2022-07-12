@@ -59,7 +59,7 @@ def get_tweets(search_word):
             try:
                 sentiment = convert(tweet_data["text"])
 
-                if sentiment["classes"][0]["confidence"] >= 0.7 or sentiment["classes"][1]["confidence"] >= 0.7:
+                if sentiment["classes"][0]["confidence"] >= 0.8 or sentiment["classes"][1]["confidence"] >= 0.8:
                     strength = 0
                     if sentiment["classes"][0]["confidence"] >= sentiment["classes"][1]["confidence"]:
                         strength = sentiment["classes"][0]["confidence"]
@@ -106,11 +106,12 @@ def distinct_sort(tweet_list):
     df = pd.DataFrame(tweet_list, columns =['id','text','top_class', 'strength_in_%', 'created_at', 'retweet_count', 'strength', 'search_word'])
     distinct_df = df.drop_duplicates(subset='id')
 
-    df_positive = distinct_df[distinct_df["top_class"] == "positive"].sort_values('strength', ascending=False).head(12).to_numpy().tolist()
-    df_negative = distinct_df[distinct_df["top_class"] == "negative"].sort_values('strength', ascending=False).head(12).to_numpy().tolist()
+    df_positive = distinct_df[distinct_df["top_class"] == "positive"].sort_values('strength', ascending=False).head(18).to_numpy().tolist()
+    df_negative = distinct_df[distinct_df["top_class"] == "negative"].sort_values('strength', ascending=False).head(18).to_numpy().tolist()
 
     posi_nega_values = df[['top_class', 'strength']].groupby('top_class').sum()
     l_records = posi_nega_values.to_dict(orient='list')
+    print(l_records)
     
     if len(l_records["strength"]) == 2:
         all_count = l_records["strength"][0] + l_records["strength"][1]

@@ -40,7 +40,7 @@ def home():
         else:
             df_positive, df_negative, positive_ratio, negative_ratio = distinct_sort(returning_tweets_list)
     
-    return render_template("index.html", df_positive = df_positive, df_negative = df_negative, list_of_search_word = list_of_search_word, positive_ratio=positive_ratio, trend_list=trend_list)
+    return render_template("index.html", df_positive = df_positive, df_negative = df_negative, list_of_search_word = list_of_search_word, negative_ratio=negative_ratio, trend_list=trend_list)
 
 
 @application.route("/rate_limit", methods=["GET"])
