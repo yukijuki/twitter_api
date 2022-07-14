@@ -2,17 +2,21 @@ branch-defaults:
   master:
     environment: flask-env9
     group_suffix: null
+environment-defaults:
+  flask-env9:
+    branch: null
+    repository: null
 global:
   application_name: flask-env9
   branch: null
-  default_ec2_keyname: null
-  default_platform: Python 3.8
+  default_ec2_keyname: aws-eb
+  default_platform: Python 3.8 running on 64bit Amazon Linux 2
   default_region: ap-northeast-1
   include_git_submodules: true
   instance_profile: null
   platform_name: null
   platform_version: null
-  profile: null
+  profile: eb-cli
   repository: null
   sc: git
   workspace_type: Application
