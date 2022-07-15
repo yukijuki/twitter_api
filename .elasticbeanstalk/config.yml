@@ -3,6 +3,9 @@ branch-defaults:
     environment: flask-env9
     group_suffix: null
 environment-defaults:
+  flask-env8:
+    branch: master
+    repository: twitter_api
   flask-env9:
     branch: null
     repository: null
